@@ -9,22 +9,17 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Dimensions,
 } from 'react-native';
 import Constants from 'expo-constants';
 
 export default function SignInScreen({
-  setToken,
+  // setToken,
   email,
   setEmail,
   password,
   setPassword,
   handleSigninRequest,
 }) {
-  // windows dimenssion
-  const width = Dimensions.get('window').width;
-  const height = Dimensions.get('window').height;
-
   const navigation = useNavigation();
   return (
     <KeyboardAwareScrollView>
@@ -61,8 +56,8 @@ export default function SignInScreen({
           <View style={{ marginTop: 200, marginBottom: 50 }}>
             <TouchableOpacity
               onPress={async () => {
-                const userToken = 'secret-token';
-                setToken(userToken);
+                // const userToken = 'secret-token';
+                // setToken(userToken);
                 handleSigninRequest();
               }}
             >

@@ -10,6 +10,7 @@ import SignInScreen from './containers/SignInScreen';
 import SignUpScreen from './containers/SignUpScreen';
 import SettingsScreen from './containers/SettingsScreen';
 import SplashScreen from './containers/SplashScreen';
+import axios from 'axios';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -21,10 +22,57 @@ export default function App() {
   // States for email and password during signin
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [description, setDescription] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // Send request for signin
-  const handleSigninRequest = () => {
-    console.log('Function called');
+  // Handle the long in Send request for signin
+  const handleSigninRequest = async () => {
+    try {
+      if (!email || !password) {
+        alert('Please fill email and password');
+      } else {
+        const response = await axios.post(
+          'https://express-airbnb-api.herokuapp.com/user/log_in',
+          {
+            email: email,
+            password: password,
+          }
+        );
+        setToken(response.data.token);
+      }
+    } catch (error) {
+      // inform user if signup is failed
+      alert(error.message);
+    }
+  };
+
+  // Handle the signup and send request for signup
+
+  const handleSignupRequest = async () => {
+    try {
+      if (email && username && description && password && confirmPassword) {
+        if (password !== confirmPassword) {
+          setErrorMessage('Passwords must be the same');
+        } else {
+          const response = await axios.post(
+            'https://express-airbnb-api.herokuapp.com/user/sign_up',
+            {
+              email: email,
+              username: username,
+              description: description,
+              password: password,
+            }
+          );
+          setToken(response.data.token);
+        }
+      } else {
+        alert('Missing fields');
+      }
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const setToken = async (token) => {
@@ -35,6 +83,7 @@ export default function App() {
     }
 
     setUserToken(token);
+    console.log(userToken);
   };
 
   useEffect(() => {
@@ -81,7 +130,23 @@ export default function App() {
               )}
             </Stack.Screen>
             <Stack.Screen name="SignUp">
-              {() => <SignUpScreen setToken={setToken} />}
+              {() => (
+                <SignUpScreen
+                  setToken={setToken}
+                  handleSignupRequest={handleSignupRequest}
+                  email={email}
+                  username={username}
+                  description={description}
+                  password={password}
+                  confirmPassword={confirmPassword}
+                  setEmail={setEmail}
+                  setUsername={setUsername}
+                  setDescription={setDescription}
+                  setPassword={setPassword}
+                  setConfirmPassword={setConfirmPassword}
+                  errorMessage={errorMessage}
+                />
+              )}
             </Stack.Screen>
           </>
         ) : (
