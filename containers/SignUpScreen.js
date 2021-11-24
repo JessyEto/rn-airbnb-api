@@ -12,6 +12,9 @@ import {
 import Constants from 'expo-constants';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+// Import theme
+import appTheme, { COLORS } from '../assets/styles/theme';
+
 export default function SignUpScreen({
   handleSignupRequest,
   email,
@@ -28,12 +31,15 @@ export default function SignUpScreen({
 }) {
   const navigation = useNavigation();
   return (
-    <KeyboardAwareScrollView>
+    <KeyboardAwareScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ backgroundColor: 'white' }}
+    >
       <View style={styles.signupContainer}>
         <View style={{ alignItems: 'center' }}>
           <Image
             style={styles.signupPicture}
-            source={require('../assets/Airbnb-Embleme.jpeg')}
+            source={require('../assets/img/Airbnb-Embleme.jpeg')}
           />
 
           <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#7B7B7B' }}>
@@ -139,7 +145,7 @@ const styles = StyleSheet.create({
   signupContainer: {
     paddingTop: Constants.statusBarHeight,
     paddingHorizontal: 30,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.mainColor,
     height: Dimensions.get('window').height + 50,
   },
 
@@ -158,14 +164,14 @@ const styles = StyleSheet.create({
 
   signupInput: {
     borderBottomWidth: 1,
-    borderBottomColor: '#FFBFC4',
+    borderBottomColor: COLORS.inputBorder,
     marginVertical: 15,
     paddingBottom: 5,
   },
 
   signupInputDescription: {
     borderWidth: 1,
-    borderColor: '#FFBFC4',
+    borderColor: COLORS.inputBorder,
     marginVertical: 15,
     paddingTop: 3,
     paddingBottom: 5,
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
   },
 
   signupButton: {
-    color: '#7B7B7B',
+    color: COLORS.buttonBorder,
     fontWeight: 'bold',
     borderWidth: 2,
     width: 160,

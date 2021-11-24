@@ -2,6 +2,9 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+// Import theme
+import appTheme, { COLORS } from '../assets/styles/theme';
+
 import {
   Text,
   TextInput,
@@ -27,7 +30,7 @@ export default function SignInScreen({
         <View style={{ alignItems: 'center' }}>
           <Image
             style={styles.signinPicture}
-            source={require('../assets/Airbnb-Embleme.jpeg')}
+            source={require('../assets/img/Airbnb-Embleme.jpeg')}
           />
 
           <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#7B7B7B' }}>
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
   signinContainer: {
     paddingTop: Constants.statusBarHeight,
     paddingHorizontal: 30,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.mainColor,
   },
 
   signinInputBox: {
@@ -103,13 +106,13 @@ const styles = StyleSheet.create({
 
   signinInput: {
     borderBottomWidth: 1,
-    borderBottomColor: '#FFBFC4',
+    borderBottomColor: COLORS.inputBorder,
     marginVertical: 15,
     paddingBottom: 5,
   },
 
   signinButton: {
-    color: '#7B7B7B',
+    color: COLORS.buttonBorder,
     fontWeight: 'bold',
     textAlign: 'center',
     borderWidth: 2,

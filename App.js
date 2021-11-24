@@ -10,6 +10,7 @@ import SignInScreen from './containers/SignInScreen';
 import SignUpScreen from './containers/SignUpScreen';
 import SettingsScreen from './containers/SettingsScreen';
 import SplashScreen from './containers/SplashScreen';
+import RoomScreen from './containers/RoomScreen';
 import axios from 'axios';
 
 const Tab = createBottomTabNavigator();
@@ -83,7 +84,6 @@ export default function App() {
     }
 
     setUserToken(token);
-    console.log(userToken);
   };
 
   useEffect(() => {
@@ -174,7 +174,8 @@ export default function App() {
                       <Stack.Screen
                         name="Home"
                         options={{
-                          title: 'My App',
+                          title: 'Home',
+                          headerShown: true,
                           headerStyle: { backgroundColor: 'red' },
                           headerTitleStyle: { color: 'white' },
                         }}
@@ -183,12 +184,12 @@ export default function App() {
                       </Stack.Screen>
 
                       <Stack.Screen
-                        name="Profile"
+                        name="Room"
                         options={{
-                          title: 'User Profile',
+                          title: 'Room',
                         }}
                       >
-                        {() => <ProfileScreen />}
+                        {() => <RoomScreen />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
@@ -196,13 +197,9 @@ export default function App() {
                 <Tab.Screen
                   name="TabSettings"
                   options={{
-                    tabBarLabel: 'Settings',
+                    tabBarLabel: 'Around me',
                     tabBarIcon: ({ color, size }) => (
-                      <Ionicons
-                        name={'ios-options'}
-                        size={size}
-                        color={color}
-                      />
+                      <Ionicons name={'location'} size={size} color={color} />
                     ),
                   }}
                 >
@@ -218,6 +215,17 @@ export default function App() {
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}
+                </Tab.Screen>
+                <Tab.Screen
+                  name="TabProfile"
+                  options={{
+                    tabBarLabel: 'Profile',
+                    tabBarIcon: ({ color, size }) => (
+                      <Ionicons name={'person'} size={size} color={color} />
+                    ),
+                  }}
+                >
+                  {() => <ProfileScreen />}
                 </Tab.Screen>
               </Tab.Navigator>
             )}
