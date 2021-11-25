@@ -1,14 +1,17 @@
-import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function ratingCalcul(num) {
-  let result = '';
+  let result = [];
 
   for (let i = 0; i < Number(num); i++) {
-    result = result + '★';
+    result.push(<FontAwesome name="star" size={20} color="orange" key={i} />);
   }
   if (result.length < 5) {
     for (let j = 0; j < 5 - result.length; j++) {
-      result = result + '☆';
+      result.push(
+        <FontAwesome name="star" size={20} color="grey" key={`j${j}`} />
+      );
     }
   }
   return result;

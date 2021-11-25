@@ -16,7 +16,7 @@ import {
 import appTheme, { COLORS, SIZES } from '../assets/styles/theme';
 import axios from 'axios';
 
-// function
+// function to calculate star rating
 import ratingCalcul from '../components/rating';
 export default function HomeScreen({ navigation }) {
   // states
@@ -64,7 +64,7 @@ export default function HomeScreen({ navigation }) {
                 <Text numberOfLines={1} style={styles.titleRoom}>
                   {item.title}
                 </Text>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={{ color: '#FFB100', marginRight: 10 }}>
                     {ratingCalcul(item.ratingValue)}
                   </Text>
