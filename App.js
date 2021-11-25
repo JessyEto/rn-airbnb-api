@@ -180,7 +180,7 @@ export default function App() {
                           headerTitleStyle: { color: 'white' },
                         }}
                       >
-                        {() => <HomeScreen />}
+                        {(props) => <HomeScreen {...props} />}
                       </Stack.Screen>
 
                       <Stack.Screen
@@ -189,7 +189,7 @@ export default function App() {
                           title: 'Room',
                         }}
                       >
-                        {() => <RoomScreen />}
+                        {(props) => <RoomScreen {...props} />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

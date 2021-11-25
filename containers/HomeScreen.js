@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import {
-  Button,
   StyleSheet,
   Text,
   View,
-  StatusBar,
-  SafeAreaView,
   FlatList,
   Image,
   ActivityIndicator,
   TouchableOpacity,
+  Dimensions,
+  ImageBackground,
 } from 'react-native';
 
 // Theme import
@@ -19,9 +18,7 @@ import axios from 'axios';
 
 // function
 import ratingCalcul from '../components/rating';
-export default function HomeScreen() {
-  const navigation = useNavigation();
-
+export default function HomeScreen({ navigation }) {
   // states
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -39,93 +36,79 @@ export default function HomeScreen() {
     fetchData();
   }, []);
 
-  return (
-    <SafeAreaView style={styles.homeContainer}>
-      {loading ? (
-        <View>
-          <ActivityIndicator />
-        </View>
-      ) : (
-        <FlatList
-          data={data}
-          keyExtractor={(item) => String(item._id)}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Room', { id: item.user.rooms });
-              }}
-              style={styles.roomBlock}
+  return loading ? (
+    <ActivityIndicator size="large" color="red" style={{ flex: 1 }} />
+  ) : (
+    <FlatList
+      showsVerticalScrollIndicator={false}
+      data={data}
+      keyExtractor={(item) => String(item._id)}
+      renderItem={({ item }) => {
+        return (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('Room', { id: item._id });
+            }}
+            style={styles.homeContainer}
+          >
+            <ImageBackground
+              style={styles.pictureRoom}
+              source={{ uri: `${item.photos[0].url}` }}
             >
-              <Image
-                style={styles.pictureRoom}
-                source={{ uri: `${item.photos[0].url}` }}
-              />
-              <View style={styles.detailRoom}>
-                <View style={{ width: 250 }}>
-                  <Text style={styles.priceBox}>{item.price}€</Text>
-                  <Text numberOfLines={1} style={styles.titleRoom}>
-                    {item.title}
+              <View style={styles.priceBox}>
+                <Text style={{ color: 'white' }}>{item.price}€</Text>
+              </View>
+            </ImageBackground>
+            <View style={styles.detailRoom}>
+              <View style={{ flex: 1 }}>
+                <Text numberOfLines={1} style={styles.titleRoom}>
+                  {item.title}
+                </Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text style={{ color: '#FFB100', marginRight: 10 }}>
+                    {ratingCalcul(item.ratingValue)}
                   </Text>
-                  <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ color: '#FFB100', marginRight: 10 }}>
-                      {ratingCalcul(item.ratingValue)}
-                    </Text>
-                    <Text style={{ color: 'grey' }}>
-                      {item.reviews} reviews
-                    </Text>
-                  </View>
-                </View>
-                <View>
-                  <Image
-                    style={styles.profilePicture}
-                    source={{ uri: `${item.user.account.photo.url}` }}
-                  />
+                  <Text style={{ color: 'grey' }}>{item.reviews} reviews</Text>
                 </View>
               </View>
-            </TouchableOpacity>
-          )}
-        />
-      )}
-    </SafeAreaView>
+              <View>
+                <Image
+                  style={styles.profilePicture}
+                  source={{ uri: `${item.user.account.photo.url}` }}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
+        );
+      }}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   homeContainer: {
-    backgroundColor: COLORS.mainColor,
-    flex: 1,
-    // marginTop: Constants.statusBarHeight,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    alignItems: 'center',
+    marginBottom: 30,
+    marginTop: 10,
   },
 
   pictureRoom: {
-    resizeMode: 'cover',
-    flex: 1,
-    aspectRatio: 3 / 2, // Your aspect ratio
-  },
-
-  roomBlock: {
-    flexDirection: 'column',
+    // resizeMode: 'cover',
+    // flex: 1,
+    // aspectRatio: 3 / 2, // Your aspect ratio
+    width: Dimensions.get('window').width * 0.9,
+    height: 200,
     justifyContent: 'flex-end',
-    marginBottom: 20,
-    borderBottomWidth: 1,
-    paddingBottom: 5,
   },
 
   priceBox: {
     backgroundColor: COLORS.priceBcgc,
     color: COLORS.textColorWhite,
-    borderWidth: 1,
     width: 50,
     height: 30,
-    alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    position: 'absolute',
-    bottom: 80,
+    marginBottom: 30,
   },
 
   titleRoom: {
@@ -134,6 +117,7 @@ const styles = StyleSheet.create({
   },
 
   detailRoom: {
+    width: Dimensions.get('window').width * 0.9,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 5,
@@ -144,5 +128,6 @@ const styles = StyleSheet.create({
     width: 60,
     flex: 1,
     borderRadius: 50,
+    marginLeft: 5,
   },
 });

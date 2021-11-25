@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/core';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, ActivityIndicator } from 'react-native';
 import axios from 'axios';
-export default function ProfileScreen() {
-  const { params } = useRoute();
-  const [dataFetch, setDataFetch] = useState({});
+export default function ProfileScreen({ route }) {
+  const [dataFetch, setDataFetch] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   // call specific id
 
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const response = await axios.get(
-          `https://express-airbnb-api.herokuapp.com/rooms/${params.id[0]}`
+        const { data } = await axios.get(
+          `https://express-airbnb-api.herokuapp.com/rooms/${route.params.id}`
         );
-        // console.log(response.data);
-        setDataFetch(response.data);
+        setDataFetch(data);
+        setIsLoading(false);
       };
 
       fetchData();
     } catch (error) {
       console.log(error.message);
     }
-  }, params.id);
+  }, [route.params.id]);
 
-  return (
+  return isLoading ? (
+    <ActivityIndicator size="large" color="red" style={{ flex: 1 }} />
+  ) : (
     <View>
       <Text>{dataFetch.price}</Text>
       <Image
         style={{ width: 300, height: 200 }}
         source={{ uri: `${dataFetch.photos[0].url}` }}
       />
-      <Text></Text>
     </View>
   );
 }
