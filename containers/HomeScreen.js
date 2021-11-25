@@ -23,7 +23,7 @@ export default function HomeScreen({ navigation }) {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // retriev data
+  // retrieve data
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(

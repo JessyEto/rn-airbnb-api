@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useRoute } from '@react-navigation/core';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import * as Location from 'expo-location';
+
 import {
   Text,
   View,
@@ -9,17 +11,19 @@ import {
   Dimensions,
   Image,
 } from 'react-native';
+
+// import to allow call request to server
 import axios from 'axios';
-
 // Theme import
-import appTheme, { COLORS, SIZES } from '../assets/styles/theme';
-
+import { COLORS, SIZES } from '../assets/styles/theme';
 // function to calculate star rating
 import ratingCalcul from '../components/rating';
 
 export default function ProfileScreen({ route }) {
   const [dataFetch, setDataFetch] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
 
   // call specific id
 
@@ -30,6 +34,8 @@ export default function ProfileScreen({ route }) {
           `https://express-airbnb-api.herokuapp.com/rooms/${route.params.id}`
         );
         setDataFetch(data);
+        setLongitude(data.location[0]);
+        setLatitude(data.location[1]);
         setIsLoading(false);
       };
 
@@ -69,9 +75,46 @@ export default function ProfileScreen({ route }) {
           <Text numberOfLines={3}>{dataFetch.description}</Text>
         </View>
       </View>
+      <MapView
+        initialRegion={{
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.2,
+          longitudeDelta: 0.2,
+        }}
+        showsUserLocation={true}
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+      >
+        <MapView.Marker
+          coordinate={{
+            latitude: latitude,
+            longitude: longitude,
+          }}
+          title="hee"
+          description="dd"
+        />
+      </MapView>
     </View>
   );
 }
+
+//  const askPermission = async () => {
+//   console.log('coucpu');
+//   let { status } = await Location.requestForegroundPermissionsAsync();
+//   if (status === 'granted') {
+//     let location = await Location.getCurrentPositionAsync();
+//     const obj = {
+//       latitude: location.coords.latitude,
+//       longitude: location.coords.longitude,
+//     };
+
+//     setCoords(obj);
+//   } else {
+//     setError(true);
+//   }
+//   setIsLoading(false);
+// };
 
 const styles = StyleSheet.create({
   roomContainer: {
@@ -111,5 +154,11 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 50,
     marginLeft: 5,
+  },
+
+  map: {
+    marginTop: 20,
+    width: Dimensions.get('window').width,
+    height: 300,
   },
 });

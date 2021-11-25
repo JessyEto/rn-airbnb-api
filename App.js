@@ -12,6 +12,7 @@ import SettingsScreen from './containers/SettingsScreen';
 import SplashScreen from './containers/SplashScreen';
 import RoomScreen from './containers/RoomScreen';
 import axios from 'axios';
+import AroundMe from './containers/AroundMe';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -195,7 +196,7 @@ export default function App() {
                   )}
                 </Tab.Screen>
                 <Tab.Screen
-                  name="TabSettings"
+                  name="TabArroundMe"
                   options={{
                     tabBarLabel: 'Around me',
                     tabBarIcon: ({ color, size }) => (
@@ -203,18 +204,24 @@ export default function App() {
                     ),
                   }}
                 >
-                  {() => (
-                    <Stack.Navigator>
-                      <Stack.Screen
-                        name="Settings"
-                        options={{
-                          title: 'Settings',
-                        }}
-                      >
-                        {() => <SettingsScreen setToken={setToken} />}
-                      </Stack.Screen>
-                    </Stack.Navigator>
-                  )}
+                  {() => {
+                    // console.log(props);
+                    return (
+                      <Stack.Navigator>
+                        <Stack.Screen
+                          name="AroundMe"
+                          options={{
+                            title: 'Around me',
+                          }}
+                        >
+                          {(props) => {
+                            console.log(props);
+                            return <AroundMe setToken={setToken} />;
+                          }}
+                        </Stack.Screen>
+                      </Stack.Navigator>
+                    );
+                  }}
                 </Tab.Screen>
                 <Tab.Screen
                   name="TabProfile"
